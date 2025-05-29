@@ -12,8 +12,8 @@ pipeline {
     }
 
     tools {
-        maven 'Maven 3'     // Configure this in Jenkins: Manage Jenkins → Global Tool Configuration
-        jdk 'JDK 17'        // Same for JDK 17
+        maven 'Maven 3'  
+        jdk 'JDK 17'      
     }
 
     stages {
@@ -43,13 +43,12 @@ pipeline {
                 }
         }
 
-        stage('Run Docker Container (Optional)') {
+        stage('Run Docker Container)') {
             steps {
                 bat "docker rm -f ${DOCKER_IMAGE} || exit 0"
                 bat "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
             }
         }
-        // Optional: Add deployment/push steps here
     }
 
     post {
