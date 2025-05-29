@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'standing-service-e2e'
+        DOCKER_TAG = 'latest'
+    }
+
+    tools {
+        maven 'Maven 3'     // Configure this in Jenkins: Manage Jenkins → Global Tool Configuration
+        jdk 'JDK 17'        // Same for JDK 17
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/swarnim0308/standing-service-e2e.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                }
+            }
+        }
+
+        stage('Run Docker Container (Optional)') {
+            steps {
+                sh "docker rm -f ${DOCKER_IMAGE} || true"
+                sh "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+            }
+        }
+
+        // Optional: Add deployment/push steps here
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+        }
+        success {
+            echo 'Build and Docker image creation successful!'
+        }
+        failure {
+            echo 'Something failed. Check the logs.'
+        }
+    }
+}
