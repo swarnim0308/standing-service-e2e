@@ -16,10 +16,14 @@ pipeline {
         jdk 'JDK 17'
     }
 
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to checkout')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/swarnim0308/standing-service-e2e.git'
+                git branch: "${params.BRANCH_NAME}", url: 'https://github.com/swarnim0308/standing-service-e2e.git'
             }
         }
 
