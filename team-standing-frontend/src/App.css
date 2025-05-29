@@ -1,0 +1,99 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZu_v-P-0blNRLJYOVeFrRXbl6klmXBCwJeQ&s');
+}
+
+
+.app-container {
+  background: rgba(255, 255, 255, 0.85); /* slightly transparent white */
+  padding: 2rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(39, 225, 83, 0.1);
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+
+h1 {
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  text-align: center;
+  font-size: 1.75rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #34495e;
+  display: block;
+}
+
+input {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.result-message,
+.error-message {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.result-message {
+  color: #2c3e50;
+}
+
+.error-message {
+  color: #e74c3c;
+}
