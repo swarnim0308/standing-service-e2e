@@ -32,9 +32,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
-                }
+                bat 'docker build -t standing-service-e2e .'
             }
         }
 
@@ -44,7 +42,6 @@ pipeline {
                 bat "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
             }
         }
-
         // Optional: Add deployment/push steps here
     }
 
