@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/swarnim0308/standing-service-e2e.git'
+                git branch: 'main', url: 'https://github.com/swarnim0308/standing-service-e2e.git'
             }
         }
 
