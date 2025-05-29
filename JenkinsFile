@@ -1,5 +1,10 @@
 pipeline {
+
     agent any
+
+    options {
+        skipDefaultCheckout(true)
+    }
 
     environment {
         DOCKER_IMAGE = 'standing-service-e2e'
