@@ -20,13 +20,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
@@ -40,8 +40,8 @@ pipeline {
 
         stage('Run Docker Container (Optional)') {
             steps {
-                sh "docker rm -f ${DOCKER_IMAGE} || true"
-                sh "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                bat "docker rm -f ${DOCKER_IMAGE} || exit 0"
+                bat "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
             }
         }
 
