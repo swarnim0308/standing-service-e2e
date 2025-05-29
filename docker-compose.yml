@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  backend:
+    image: standing-service-backend:latest
+    ports:
+      - "8090:8080"
+
+  frontend:
+    image: standing-service-frontend:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

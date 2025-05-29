@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     options {
@@ -7,13 +6,14 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'standing-service-e2e'
+        BACKEND_IMAGE = 'standing-service-backend'
+        FRONTEND_IMAGE = 'standing-service-frontend'
         DOCKER_TAG = 'latest'
     }
 
     tools {
-        maven 'Maven 3'  
-        jdk 'JDK 17'      
+        maven 'Maven 3'
+        jdk 'JDK 17'
     }
 
     stages {
@@ -23,30 +23,34 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Backend') {
             steps {
-                bat 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-
-        stage('Build Docker Image') {
-                steps {
+                dir('backend') {
+                    bat 'mvn clean package -DskipTests'
                     script {
-                        dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                        docker.build("${BACKEND_IMAGE}:${DOCKER_TAG}", '.')
                     }
                 }
+            }
         }
 
-        stage('Run Docker Container)') {
+        stage('Build Frontend') {
             steps {
-                bat "docker rm -f ${DOCKER_IMAGE} || exit 0"
-                bat "docker run -d -p 8090:8080 --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                dir('team-standing-frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                    script {
+                        docker.build("${FRONTEND_IMAGE}:${DOCKER_TAG}", '.')
+                    }
+                }
+            }
+        }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                // Use docker-compose to start both containers together
+                bat 'docker-compose down || exit 0'  // stop any running containers first
+                bat 'docker-compose up -d --build'  // build images and start containers
             }
         }
     }
@@ -56,10 +60,10 @@ pipeline {
             echo 'Cleaning up...'
         }
         success {
-            echo 'Build and Docker image creation successful!'
+            echo 'Build and deployment successful!'
         }
         failure {
-            echo 'Something failed. Check the logs.'
+            echo 'Build or deployment failed.'
         }
     }
 }
