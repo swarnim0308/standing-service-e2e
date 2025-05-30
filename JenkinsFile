@@ -42,8 +42,8 @@ stage('Build Backend') {
         stage('Build Frontend') {
             steps {
                 dir('team-standing-frontend') {
-                    sh 'npm install'
-                    sh 'npm run build'
+                    bat 'npm install'
+                    bat 'npm run build'
                     script {
                         docker.build("${FRONTEND_IMAGE}:${DOCKER_TAG}", '-f Dockerfile.frontend .')
                     }
